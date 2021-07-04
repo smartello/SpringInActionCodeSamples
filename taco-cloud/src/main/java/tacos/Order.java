@@ -53,6 +53,9 @@ public class Order implements Serializable {
     @ManyToMany(targetEntity = Taco.class)
     private List<Taco> designList = new ArrayList<>();
 
+    @ManyToOne
+    private User user;
+
     public void addDesign(Taco design) {
         designList.add(design);
     }
