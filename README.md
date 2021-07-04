@@ -1,2 +1,2 @@
-#Code Samplse for "Spring in Action 5th edition"
+# Code Samples for "Spring in Action, 5th edition"
 The quality of code snippets in the book (as well as in the official repository) is so bad that it's almost good since not a single chapter works out of the box and one has to figure out how to make it work. The purpose of this repository is to help others find thing faster than I was able to do it by myself.
