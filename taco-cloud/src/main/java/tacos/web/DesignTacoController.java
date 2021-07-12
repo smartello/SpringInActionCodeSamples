@@ -1,5 +1,6 @@
 package tacos.web;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,11 +20,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import lombok.extern.slf4j.Slf4j;
 import tacos.Ingredient.Type;
+import tacos.User;
 import tacos.data.IngredientRepository;
 import tacos.Ingredient;
 import tacos.Order;
 import tacos.Taco;
 import tacos.data.TacoRepository;
+import tacos.data.UserRepository;
 
 @Slf4j
 @Controller
@@ -31,11 +35,13 @@ import tacos.data.TacoRepository;
 public class DesignTacoController {
     private final IngredientRepository ingredientRepository;
     private final TacoRepository designRepo;
+    private final UserRepository userRepository;
 
     @Autowired
-    public DesignTacoController(IngredientRepository ingredientRepository, TacoRepository designRepo) {
+    public DesignTacoController(IngredientRepository ingredientRepository, TacoRepository designRepo, UserRepository userRepository) {
         this.ingredientRepository = ingredientRepository;
         this.designRepo = designRepo;
+        this.userRepository = userRepository;
     }
 
     @ModelAttribute
@@ -61,10 +67,14 @@ public class DesignTacoController {
     }
 
     @GetMapping
-    public String showDesignForm(Model model) {
+    public String showDesignForm(Model model, Principal principal) {
         addIngredientsToModel(model);
         model.addAttribute("design", new Taco());
-    
+
+        String username = principal.getName();
+        User user = userRepository.findByUsername(username);
+        model.addAttribute("user", user);
+
         return "design";
     }
 
